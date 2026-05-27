@@ -2,22 +2,41 @@ import { ProductCardComponent } from "@/components/product/ProductCardComponent"
 import Link from "next/link";
 import { Suspense, use } from "react";
 import { ProductType } from "@/libs/type/ProductType";
+import CreateProductPageModal from "../(.)create/page";
+
 // async function to getProducts
 async function getProducts() {
   try {
     // calling fetching data from api/products/route.ts
-    const res = await fetch('http://localhost:3000/api/product', {
-      cache: 'no-store'
+    const res = await fetch("http://localhost:3000/api/product", {
+      cache: "no-store",
     });
     const products = await res?.json();
-    console.log(`=> Product data: ${products?.content}`);
+    console.log(`=> Product data: ${products}`);
 
     return products;
-
   } catch (err) {
-    throw new Error('fail to fetch data from api')
+    throw new Error("fail to fetch data from api");
   }
 }
+console.log(`===> get product : ${getProducts()}`);
+
+// async function getProducts() {
+//   const res = await fetch("https://ishop.cheat.casa/api/v1/products", {
+//     cache: "no-store",
+//   });
+
+//   if (!res.ok) {
+//     throw new Error(`HTTP Error: ${res.status} ${res.statusText}`);
+//   }
+
+//   const data = await res.json();
+
+//   // ✅ Proper logging — use comma not template literal
+//   console.log("=> Product data:", data);
+
+//   return data;
+// }
 
 // loading suspense component
 function LoadingSuspenseComponent() {
@@ -36,8 +55,22 @@ export default function ProductPageRoute() {
     <div>
       {/* navbar for create and edit */}
       <div className="flex gap-5">
-        <Link href={"/dashboard/create"}></Link>create
-        <Link href={"/dashboard/edit"}></Link>edit
+        <button className="group relative overflow-hidden bg-blue-500 rounded-xl px-6 py-3 font-semibold text-white m-5">
+          <Link
+            href="/dashboard/create"
+            className="relative z-10 flex items-center gap-2"
+          >
+            Create
+          </Link>
+        </button>
+        <button className="group relative overflow-hidden bg-blue-500 rounded-xl px-6 py-3 font-semibold text-white m-5">
+          <Link
+            href="/dashboard/edit"
+            className="relative z-10 flex items-center 2"
+          >
+            Edit
+          </Link>
+        </button>
       </div>
       {/* adding suspend */}
       <Suspense fallback={<LoadingSuspenseComponent />}>
@@ -51,10 +84,9 @@ function ProductRenderingProcess() {
   // using hook to fetch data from server
   const { data: products } = use(getProducts());
   return (
-    <div className="flex flex-5">
-      {/* display data heere from api */}
-      <div className="flex gap-5">
-        {products?.map(({ uuid, thumbnail, priceOut, name }: ProductType) => (
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {products?.content.map(
+        ({ uuid, thumbnail, priceOut, name }: ProductType) => (
           <ProductCardComponent
             uuid={uuid}
             key={uuid}
@@ -62,8 +94,8 @@ function ProductRenderingProcess() {
             priceOut={priceOut}
             name={name}
           />
-        ))}
-      </div>
+        ),
+      )}
     </div>
   );
 }
