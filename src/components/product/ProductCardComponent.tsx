@@ -1,12 +1,15 @@
 import { Card } from "flowbite-react";
 import { ProductType } from "@/libs/type/ProductType";
+import Link from "next/link";
 
 export function ProductCardComponent({
+  uuid,
   thumbnail,
   name,
   priceOut,
 }: ProductType) {
   return (
+    <Link href={`/dashboard/products/${uuid}`}>
     <Card
       className="group max-w-sm overflow-hidden rounded-3xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
       imgAlt={name}
@@ -51,5 +54,6 @@ export function ProductCardComponent({
         </button>
       </div>
     </Card>
+    </Link>
   );
 }

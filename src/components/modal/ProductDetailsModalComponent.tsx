@@ -43,7 +43,7 @@ export default function ProductDetailsModalComponent({
               </div>
 
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">{name}</h1>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{name}</h1>
 
                 <p className="mt-4 leading-7 text-gray-600"></p>
               </div>
